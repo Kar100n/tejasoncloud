@@ -505,6 +505,15 @@ h1, h2, h3, h4, h5, h6 {
     align-items: start;
 }
 
+.about-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent);
+    margin-bottom: 24px;
+}
+
 .about-content h2 {
     font-size: 2.5rem;
     margin-bottom: 24px;
