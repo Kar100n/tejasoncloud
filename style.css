@@ -13,11 +13,14 @@
     --accent: #10b981;
     --accent-hover: #059669;
     --accent-subtle: rgba(16, 185, 129, 0.1);
+    --accent-glow: 0 0 20px rgba(16, 185, 129, 0.3);
+    --accent-glow-lg: 0 0 40px rgba(16, 185, 129, 0.2);
 
     --border: #27272a;
     --border-light: #3f3f46;
 
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: 'Space Grotesk', 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -97,6 +100,7 @@ section {
 
 /* ===== Typography ===== */
 h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
     font-weight: 600;
     line-height: 1.3;
 }
@@ -129,6 +133,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary:hover {
     background: var(--accent-hover);
     transform: translateY(-1px);
+    box-shadow: var(--accent-glow);
 }
 
 .btn-secondary {
@@ -226,6 +231,8 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     border-radius: 100px;
     margin-bottom: 24px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    box-shadow: var(--accent-glow);
 }
 
 .hero h1 {
@@ -275,6 +282,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-mono);
     color: var(--accent);
     line-height: 1;
+    text-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
 }
 
 .metric-unit {
@@ -306,15 +314,19 @@ h1, h2, h3, h4, h5, h6 {
 .service-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
+    border-left: 3px solid transparent;
     border-radius: var(--radius-lg);
     padding: 32px;
-    transition: all var(--transition);
+    transition: all 250ms ease;
+    cursor: pointer;
 }
 
 .service-card:hover {
     background: var(--bg-card-hover);
     border-color: var(--border-light);
-    transform: translateY(-2px);
+    border-left-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(16, 185, 129, 0.05);
 }
 
 .service-icon {
@@ -352,6 +364,11 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-muted);
     font-size: 0.8125rem;
     border-radius: var(--radius-sm);
+    transition: color 250ms ease;
+}
+
+.service-card:hover .service-tags li {
+    color: var(--text-secondary);
 }
 
 /* ===== Work / Case Studies ===== */
@@ -369,13 +386,30 @@ h1, h2, h3, h4, h5, h6 {
 
 .case-study:hover {
     border-color: var(--border-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
 .case-study.featured {
     margin-bottom: 40px;
     padding: 48px;
     background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-tertiary) 100%);
-    border-color: var(--border-light);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+}
+
+.case-study.featured::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(135deg, var(--accent), rgba(16, 185, 129, 0.1), var(--border-light));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
 }
 
 .case-study-badge {
@@ -468,7 +502,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .case-studies-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
 }
 
@@ -579,6 +613,15 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-secondary);
     font-size: 0.875rem;
     border-radius: var(--radius-sm);
+    transition: all 250ms ease;
+    cursor: default;
+}
+
+.skills-tags span:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-subtle);
+    box-shadow: var(--accent-glow);
 }
 
 .cert-badge {
@@ -592,6 +635,8 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     border-radius: var(--radius-md);
     margin-top: 8px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    box-shadow: var(--accent-glow);
 }
 
 /* ===== Contact ===== */
@@ -639,6 +684,8 @@ h1, h2, h3, h4, h5, h6 {
 .contact-method:hover {
     background: var(--bg-card-hover);
     border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--accent-glow);
 }
 
 .contact-method svg {
@@ -660,6 +707,85 @@ h1, h2, h3, h4, h5, h6 {
 .footer p {
     color: var(--text-muted);
     font-size: 0.875rem;
+}
+
+/* ===== Animations ===== */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Nav active link indicator */
+.nav-links a:not(.btn).active {
+    color: var(--accent);
+}
+
+/* Accent line under hero heading */
+.hero h1 .accent {
+    position: relative;
+}
+
+.hero h1 .accent::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    border-radius: 2px;
+}
+
+/* Result value glow */
+.result-value {
+    text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* ===== Accessibility ===== */
+/* Focus states */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.service-card:focus-within {
+    border-color: var(--accent);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Cursor pointer on interactive elements */
+.case-study,
+.contact-method,
+.social-link,
+.nav-links a {
+    cursor: pointer;
 }
 
 /* ===== Responsive ===== */
